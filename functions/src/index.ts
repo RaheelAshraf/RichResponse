@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions';
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
-// const { LinkOutSuggestion } = require('actions-on-google');
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -23,7 +22,7 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 
     const testCard = (agent: any) => {
 
-        agent.add(`This message is from Dialogflow's Cloud Functions for Firebase inline editor!`);
+        agent.add(`This is card response`);
         agent.add(new Card({
             title: `Title: this is a card title`,
             imageUrl: 'https://dialogflow.com/images/api_home_laptop.svg',
@@ -43,10 +42,6 @@ export const helloWorld = functions.https.onRequest((request, response) => {
         agent.add(new Suggestion(`Quick Reply`));
         agent.add(new Suggestion(`Suggestion`));
     }
-
-
-
-
 
     let intentMap = new Map();
     intentMap.set('Default Welcome Intent', welcome);
