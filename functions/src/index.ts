@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
+// const { List, Image } = require('actions-on-google');
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -27,14 +28,14 @@ export const helloWorld = functions.https.onRequest((request, response) => {
             title: `Title: this is a card title`,
             imageUrl: 'https://dialogflow.com/images/api_home_laptop.svg',
             text: `This is the body text of a card.  You can even use line\n  breaks and emoji! 💁`,
-            buttonText: 'This is a button',
+            buttonText: 'Button',
             buttonUrl: 'https://docs.dialogflow.com/'
         })
         );
     }
 
     const testList = (agent: any) => {
-        agent.add(`List is showing below`);
+        
     }
 
     const testSuggestions = (agent: any) => {
@@ -43,12 +44,18 @@ export const helloWorld = functions.https.onRequest((request, response) => {
         agent.add(new Suggestion(`Suggestion`));
     }
 
+    function playSong(agent: any) {
+
+        agent.add(`playing`); 
+    }
+
     let intentMap = new Map();
     intentMap.set('Default Welcome Intent', welcome);
     intentMap.set('Default Fallback Intent', fallback);
     intentMap.set('card', testCard);
     intentMap.set('list', testList);
-    intentMap.set('suggestions', testSuggestions)
+    intentMap.set('suggestions', testSuggestions);
+    intentMap.set('playsong', playSong)
     _agent.handleRequest(intentMap);
 });
 
