@@ -58,6 +58,38 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
   }
 
+
+  const Buttons = (agent) => {
+
+    const facebookPayload = `{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"What do you want to do next?",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://www.messenger.com",
+                "title":"Visit Messenger"
+              },
+              {
+                "type":"web_url",
+                "url":"https://www.google.com",
+                "title":"Visit Google"
+              },
+              {
+                "type":"web_url",
+                "url":"https://www.yahoo.com",
+                "title":"Visit Yahoo"
+              }
+            ]
+          }
+        }
+    }`
+    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+  }
+
   const suggestion = (agent) => {
     agent.add(`showing suggestion`)
     agent.add(new Suggestion(`Yes`));
@@ -100,6 +132,27 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
   }
 
+  const quickReplies = (agent) => {
+
+    const facebookPayload = `{
+      "text": "Here is a quick reply!",
+      "quick_replies":[
+        {
+          "content_type":"text",
+          "title":"How to get more out of your team or clients",
+          "payload":"How to get more out of your team or clients",
+          "image_url":"http://example.com/img/red.png"
+        },
+        {
+          "content_type":"location"
+        }
+      ]
+    }`
+
+    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+  }
+
+
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
@@ -107,6 +160,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('suggestion', suggestion);
   intentMap.set('video', video);
   intentMap.set('website', website);
+  intentMap.set('button', Buttons);
+  intentMap.set('quick replies', quickReplies);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
 });
