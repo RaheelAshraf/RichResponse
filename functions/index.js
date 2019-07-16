@@ -32,7 +32,7 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       "elements":[
          {
           "title":"Here is your title!",
-           "image_url":"",
+           "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZb4ji9wBwf-Sh1auGeXf-nYUPOyO3C7UNwzb8I4xZE4T9p6zZ-w",
           "subtitle":"Here goes your subtitle.",
           "default_action": {
             "type": "web_url",
@@ -135,13 +135,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   const quickReplies = (agent) => {
 
     const facebookPayload = `{
-      "text": "Here is a quick reply!",
+      "text": "Which bot do you want to see?",
       "quick_replies":[
         {
           "content_type":"text",
           "title":"How to get more out of your team or clients",
           "payload":"How to get more out of your team or clients",
           "image_url":"http://example.com/img/red.png"
+        }, {
+          "content_type":"text",
+          "title":"Option 2",
+          "payload":"Option 2",
+          "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf-vug5ei4Yo2RA4mmaWUDXTsrWZo_xioWGlHg9LrTOvjPHOVC"
         },
         {
           "content_type":"location"
