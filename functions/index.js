@@ -1,10 +1,14 @@
-// See https://github.com/dialogflow/dialogflow-fulfillment-nodejs
-// for Dialogflow fulfillment library docs, samples, and to report issues
-'use strict';
 
+'use strict';
 const functions = require('firebase-functions');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { Card, Suggestion, Payload } = require('dialogflow-fulfillment');
+const {Payload } = require('dialogflow-fulfillment');
+const Card = require('./intents/cardIntent'); 
+const Button = require('./intents/buttonIntent'); 
+const Suggestion = require('./intents/suggestionIntent'); 
+const Video = require('./intents/videoIntent'); 
+const Website = require('./intents/websiteIntent');  
+const QuickReplies = require('./intents/quickReplies'); 
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
@@ -23,140 +27,29 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
 
   const card = (agent) => {
-
-    const facebookPayload = `{
-  "attachment": {
-    "type": "template",
-    "payload": {
-      "template_type":"generic",
-      "elements":[
-         {
-          "title":"Here is your title!",
-           "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZb4ji9wBwf-Sh1auGeXf-nYUPOyO3C7UNwzb8I4xZE4T9p6zZ-w",
-          "subtitle":"Here goes your subtitle.",
-          "default_action": {
-            "type": "web_url",
-            "url": "https://google.com",
-            "webview_height_ratio": "tall"
-          },
-          "buttons":[
-            {
-              "type":"web_url",
-              "url":"https://facebook.com",
-              "title":"Link to Facebook"
-            },{
-              "type":"postback",
-              "title":"Some Text",
-              "payload":"Some Text"
-            }              
-          ]      
-        }
-      ]
-    }
-  }
-}`;
-    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+    Card.cardFun(agent); 
   }
 
 
   const Buttons = (agent) => {
-
-    const facebookPayload = `{
-        "attachment":{
-          "type":"template",
-          "payload":{
-            "template_type":"button",
-            "text":"What do you want to do next?",
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://www.messenger.com",
-                "title":"Visit Messenger"
-              },
-              {
-                "type":"web_url",
-                "url":"https://www.google.com",
-                "title":"Visit Google"
-              },
-              {
-                "type":"web_url",
-                "url":"https://www.yahoo.com",
-                "title":"Visit Yahoo"
-              }
-            ]
-          }
-        }
-    }`
-    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+    Button.butFunc(agent); 
   }
 
   const suggestion = (agent) => {
-    agent.add(`showing suggestion`)
-    agent.add(new Suggestion(`Yes`));
-    agent.add(new Suggestion(`No`));
+   Suggestion.suggFunc(agent); 
   }
 
   const video = (agent) => {
-    const facebookPayload = `{
-      "attachment": {
-        "type": "template",
-        "payload": {
-           "template_type": "media",
-           "elements": [
-              {
-                 "media_type": "video",
-                 "url": "https://www.facebook.com/AllTimeConspiracies/videos/199444947485193/"
-              }
-           ]
-        }
-      }    
-    }`;
-    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+    Video.videoFunc(agent); 
   }
 
   const website = (agent) => {
-
-    const facebookPayload = `{
-          "attachment": {
-            "type": "template",
-            "payload": {
-              "template_type":"open_graph",
-              "elements":[
-                 {
-                  "url":"https://gmail.com"
-                }
-              ]
-            }
-          }    
-    }`;
-    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+    Website.websiteFunc(agent); 
   }
 
   const quickReplies = (agent) => {
-
-    const facebookPayload = `{
-      "text": "Which bot do you want to see?",
-      "quick_replies":[
-        {
-          "content_type":"text",
-          "title":"How to get more out of your team or clients",
-          "payload":"How to get more out of your team or clients",
-          "image_url":"http://example.com/img/red.png"
-        }, {
-          "content_type":"text",
-          "title":"Option 2",
-          "payload":"Option 2",
-          "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf-vug5ei4Yo2RA4mmaWUDXTsrWZo_xioWGlHg9LrTOvjPHOVC"
-        },
-        {
-          "content_type":"location"
-        }
-      ]
-    }`
-
-    agent.add(new Payload(agent.FACEBOOK, facebookPayload, { sendAsMessage: true }));
+    QuickReplies.quickRepFunc(agent); 
   }
-
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
